@@ -16,6 +16,14 @@ pipeline {
             steps {
                 echo 'Hello!'
                 sh 'ls -la'
+           }
+        }
+        stage('test') {
+            steps {
+                sh '''
+                osv-scanner -v
+                ls {WORKSPACE}
+                '''
             }
         }
     }
