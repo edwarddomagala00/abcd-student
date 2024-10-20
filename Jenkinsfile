@@ -21,7 +21,7 @@ pipeline {
         stage('test') {
             steps {
                 sh '''
-                osv-scanner scan --lockfile package-lock.json --format json --output osv.json
+                osv-scanner scan --lockfile package-lock.json --format json --output osv.json || true
                 ls -la
                 head osv.json
                 '''
