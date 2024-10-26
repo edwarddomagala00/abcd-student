@@ -30,7 +30,7 @@ pipeline {
             }
             post {
                 always {
-                    archiveArtifacts artifacts: '/results/**/*', fingerprint: true, allowEmptyArchive: true
+                    archiveArtifacts artifacts: '/zap/wrk/reports/*', fingerprint: true, allowEmptyArchive: true
                 }   
             }
         }       
