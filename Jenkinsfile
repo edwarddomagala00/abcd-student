@@ -46,14 +46,13 @@ pipeline {
                 head osv.json
                 '''
             }
+            post {
+                always {
+                    echo "archiving"
+                    archiveArtifacts artifacts: '/results/**/*', fingerprint: true, allowEmptyArchive: true
+                    echo "TODO, publish results"
+                }
+            }
         }
-    
-    
-    post {
-        always {
-            echo "archiving"
-            archiveArtifacts artifacts: '/results/**/*', fingerprint: true, allowEmptyArchive: true
-            echo "TODO, publish results"  
-       }
     }
 }
