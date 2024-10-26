@@ -26,7 +26,7 @@ pipeline {
                   -t ghcr.io/zaproxy/zaproxy:stable \
                   /bin/bash -c "zap.sh -cmd -addonupdate; /bin/bash zap.sh -cmd -addoninstall communityScripts -addoninstall pscanrulesAlpha --addoninstall pscanrulesBeta -autorun /zap/wrk/passive.yaml" || true
                  '''
-            
+            }
             post {
                 always {
                     sh '''
@@ -36,8 +36,8 @@ pipeline {
                     docker rm zap
                     '''
                 }   
-            }   
-        }
+            }
+        }       
         stage('osv-scanner') {
             steps {
                 sh '''
@@ -47,7 +47,8 @@ pipeline {
                 '''
             }
         }
-    }
+    
+    
     post {
         always {
             echo "archiving"
