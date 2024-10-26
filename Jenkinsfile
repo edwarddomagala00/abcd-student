@@ -35,7 +35,8 @@ pipeline {
                     docker stop zap juice-shop
                     docker rm zap
                     '''
-              }
+                }   
+           }
         }
  
         stage('osv-scanner') {
