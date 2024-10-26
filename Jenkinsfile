@@ -12,13 +12,33 @@ pipeline {
                 }
             }
         }
-        stage('Example') {
+        stage('DAST') {
             steps {
-                echo 'Hello!'
-                sh 'ls -la'
-           }
+                sh '''
+                docker run --name juice-shop -d --rm -p \
+                3000:3000 bkimminich/juice-shop
+                sleep 5
+                '''
+
+                sh '''
+                docker run name --zap --rm
+                  -v /home/mkopras/circle/DevSecOps/abcd-student/.zap:/zap/wrk/:rw
+                  -t ghcr.io/zaproxy/zaproxy:stable \
+                  /bin/bash -c "zap.sh -cmd -addonupdate; /bin/bash zap.sh -cmd -addoninstall communityScripts -addoninstall pscanrulesAlpha --addoninstall pscanrulesBeta -autorun /zap/wrk/passive.yaml " || true
+                 '''
+            }
+            post {
+                always {
+                    sh '''
+                    docker cp zap::/zap/zap wrk/reports/zap_html_report.html ${WORKSPACE}/results/zap_html_report.html
+                    docker cp zap::/zap/zap wrk/reports/zap_xml_report.xml ${WORKSPACE}/results/zap_xml_report.xml
+                    docker stop za p juice-shop
+                    docker rm zap
+                    '''
+              }
         }
-        stage('test') {
+ 
+        stage('osv-scanner') {
             steps {
                 sh '''
                 osv-scanner scan --lockfile package-lock.json --format json --output osv.json || true
@@ -28,4 +48,12 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            echo "archiving"
+            archiveArtifacts artifacts: '/results/**/*', fingerprint: true, allowEmptyArchive: true
+            echo "TODO, publish results"
+       }
+
+
 }
