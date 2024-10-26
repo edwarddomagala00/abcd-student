@@ -36,9 +36,8 @@ pipeline {
                     docker rm zap
                     '''
                 }   
-           }
+            }   
         }
- 
         stage('osv-scanner') {
             steps {
                 sh '''
@@ -48,13 +47,12 @@ pipeline {
                 '''
             }
         }
-    }
+    
     post {
         always {
             echo "archiving"
             archiveArtifacts artifacts: '/results/**/*', fingerprint: true, allowEmptyArchive: true
-            echo "TODO, publish results"
+            echo "TODO, publish results"  
        }
-
-
+    }
 }
