@@ -15,6 +15,7 @@ pipeline {
         stage('DAST') {
             steps {
                 sh '''
+                docker rm -f juice-shop
                 docker run --rm --name juice-shop --network demo-network -d -p 3000:3000 bkimminich/juice-shop
 
                 sleep 5
