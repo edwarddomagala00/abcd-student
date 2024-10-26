@@ -15,14 +15,13 @@ pipeline {
         stage('DAST') {
             steps {
                 sh '''
-                docker run --name juice-shop -d --rm -p \
-                3000:3000 bkimminich/juice-shop
+                docker run --name juice-shop -d --rm -p 3000:3000 bkimminich/juice-shop
                 sleep 5
                 '''
 
                 sh '''
-                docker run name --zap --rm
-                  -v /home/mkopras/circle/DevSecOps/abcd-student/.zap:/zap/wrk/:rw
+                docker run name --zap --rm \
+                  -v /home/mkopras/circle/DevSecOps/abcd-student/.zap:/zap/wrk/:rw \
                   -t ghcr.io/zaproxy/zaproxy:stable \
                   /bin/bash -c "zap.sh -cmd -addonupdate; /bin/bash zap.sh -cmd -addoninstall communityScripts -addoninstall pscanrulesAlpha --addoninstall pscanrulesBeta -autorun /zap/wrk/passive.yaml" || true
                  '''
