@@ -42,6 +42,13 @@ pipeline {
                 head osv.json
                 '''
             }
+       post {
+            always {
+                defectDojoPublisher(artifact: 'osv.json', 
+                    productName: 'Juice Shop', 
+                    scanType: 'OSV Scan', 
+                    engagementName: 'mikolaj.kopras@gmail.com')
+            }
         }
     }
 }
