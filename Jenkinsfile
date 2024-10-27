@@ -31,7 +31,7 @@ pipeline {
                   docker cp zap:/zap/wrk/reports/zap_xml_report.xml /tmp/reports/zap_xml_report.xml
                   head /tmp/reports/zap_xml_report.xml
                  '''
-                 archiveArtifacts artifacts: '/tmp/reports/*', fingerprint: true, allowEmptyArchive: true
+                 archiveArtifacts artifacts: '/tmp/reports', fingerprint: true, allowEmptyArchive: true
                  defectDojoPublisher(artifact: '/tmp/reports/zap_xml_report.xml', 
                     productName: 'Juice Shop', 
                     scanType: 'ZAP Scan', 
