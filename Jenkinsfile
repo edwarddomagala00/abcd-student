@@ -27,11 +27,12 @@ pipeline {
                   -t ghcr.io/zaproxy/zaproxy:stable \
                   /bin/bash -c "zap.sh -cmd -addonupdate; /bin/bash zap.sh -cmd -addoninstall communityScripts -addoninstall pscanrulesAlpha --addoninstall pscanrulesBeta -autorun /zap/wrk/passive.yaml" || true
                   mkdir -p /tmp/results
-                  docker cp zap:/zap/wrk/reports/zap_html_report.html /tmp/results/zap_html_report.html
-                  docker cp zap:/zap/wrk/reports/zap_xml_report.xml /tmp/results/zap_xml_report.xml
+                  docker cp zap:/zap/wrk/reports/zap_html_report.html /tmp/reports/zap_html_report.html
+                  docker cp zap:/zap/wrk/reports/zap_xml_report.xml /tmp/reports/zap_xml_report.xml
+                  head /tmp/reports/zap_xml_report.xml
                  '''
-                 archiveArtifacts artifacts: '/tmp/results/*', fingerprint: true, allowEmptyArchive: true
-                 defectDojoPublisher(artifact: '/tmp/results/zap_xml_report.xml', 
+                 archiveArtifacts artifacts: '/tmp/reports/*', fingerprint: true, allowEmptyArchive: true
+                 defectDojoPublisher(artifact: '/tmp/reports/zap_xml_report.xml', 
                     productName: 'Juice Shop', 
                     scanType: 'ZAP Scan', 
                     engagementName: 'mikolaj.kopras@gmail.com'
