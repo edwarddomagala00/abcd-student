@@ -26,8 +26,8 @@ pipeline {
                   -v /home/mkopras/circle/DevSecOps/abcd-student/.zap:/zap/wrk/:rw \
                   -t ghcr.io/zaproxy/zaproxy:stable \
                   /bin/bash -c "zap.sh -cmd -addonupdate; /bin/bash zap.sh -cmd -addoninstall communityScripts -addoninstall pscanrulesAlpha --addoninstall pscanrulesBeta -autorun /zap/wrk/passive.yaml" || true
-                  docker cp zap:/zap/zap wrk/reports/zap_html_report.html ${WORKSPACE}/results/zap_html_report.html
-                  docker cp zap:/zap/zap wrk/reports/zap_xml_report.xml ${WORKSPACE}/results/zap_xml_report.xml
+                  docker cp zap:/zap/zap/wrk/reports/zap_html_report.html ${WORKSPACE}/results/zap_html_report.html
+                  docker cp zap:/zap/zap/wrk/reports/zap_xml_report.xml ${WORKSPACE}/results/zap_xml_report.xml
                  '''
                  archiveArtifacts artifacts: '${WORKSPACE}/results/*', fingerprint: true, allowEmptyArchive: true
 
