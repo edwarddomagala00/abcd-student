@@ -30,6 +30,12 @@ pipeline {
             }
             post {
                 always {
+                    sh '''
+                    ls
+                    pwd
+                    ls /
+                    ls /zap                    
+                    '''
                     archiveArtifacts artifacts: '/zap/wrk/reports/*', fingerprint: true, allowEmptyArchive: true
                 }   
             }
