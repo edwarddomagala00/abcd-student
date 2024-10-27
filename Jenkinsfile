@@ -31,7 +31,12 @@ pipeline {
                   docker cp zap:/zap/wrk/reports/zap_xml_report.xml /tmp/results/zap_xml_report.xml
                  '''
                  archiveArtifacts artifacts: '/tmp/results/*', fingerprint: true, allowEmptyArchive: true
-
+                 defectDojoPublisher(artifact: '/tmp/results/zap_xml_report.xml', 
+                    productName: 'Juice Shop', 
+                    scanType: 'ZAP Scan', 
+                    engagementName: 'mikolaj.kopras@gmail.com'
+               )
+ 
             }
        }       
        stage('osv-scanner') {
@@ -41,21 +46,17 @@ pipeline {
                 ls -la
                 head osv.json
                 '''
-            }
-       }
-       post {
-           always {
                defectDojoPublisher(artifact: 'osv.json', 
                     productName: 'Juice Shop', 
                     scanType: 'OSV Scan', 
                     engagementName: 'mikolaj.kopras@gmail.com'
                )
-               defectDojoPublisher(artifact: '/tmp/results/zap_xml_report.xml', 
-                    productName: 'Juice Shop', 
-                    scanType: 'ZAP Scan', 
-                    engagementName: 'mikolaj.kopras@gmail.com'
-               )
-           }
+ 
+            }
+       }
+       post {
+           always {
+          }
        }
     }
 }
