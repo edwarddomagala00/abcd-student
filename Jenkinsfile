@@ -13,6 +13,20 @@ pipeline {
             }
         }
 
+        stage('semgrep') {
+            steps {
+                sh '''
+                semgrep scan --json-output=semgrep.json
+                cat semgrep.json
+                '''  
+              defectDojoPublisher(artifact: 'semgrep.json', 
+                    productName: 'Juice Shop', 
+                    scanType: 'Semgrep JSON Report', 
+                    engagementName: 'mikolaj.kopras@gmail.com'
+               )
+            }
+       }
+
        stage('trufflehog') {
             steps {
                 sh '''
