@@ -34,7 +34,10 @@ pipeline {
                     ls -la
                     pwd
                     ls -la /
-                    docker ps                     
+                    docker ps
+                    mkdir -p /zap/wrk/reports
+                    docker cp zap:/zap/wrk/reports/ /zap/wrk/reports
+                    ls -la /zap/wrk/reports
                     '''
                     archiveArtifacts artifacts: '/zap/wrk/reports/*', fingerprint: true, allowEmptyArchive: true
                 }   
