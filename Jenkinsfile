@@ -29,24 +29,11 @@ pipeline {
                   docker cp zap:/zap/zap wrk/reports/zap_html_report.html ${WORKSPACE}/results/zap_html_report.html
                   docker cp zap:/zap/zap wrk/reports/zap_xml_report.xml ${WORKSPACE}/results/zap_xml_report.xml
                  '''
+                 archiveArtifacts artifacts: '${WORKSPACE}/results/*', fingerprint: true, allowEmptyArchive: true
+
             }
-            post {
-                always {
-                    sh '''
-                    ls -la
-                    pwd
-                    ls -la /
-                    docker ps
-                    mkdir -p /zap/wrk/reports
-                    docker cp zap:/zap/wrk/reports/ /zap/wrk/reports
-                    ls -la /zap/wrk/reports
-                    ls -la /tmp
-                    '''
-                    archiveArtifacts artifacts: '/zap/wrk/reports/reports/*', fingerprint: true, allowEmptyArchive: true
-                }   
-            }
-        }       
-        stage('osv-scanner') {
+       }       
+       stage('osv-scanner') {
             steps {
                 sh '''
                 osv-scanner scan --lockfile package-lock.json --format json --output osv.json || true
