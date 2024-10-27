@@ -31,10 +31,9 @@ pipeline {
             post {
                 always {
                     sh '''
-                    ls -lq 
+                    ls -la
                     pwd
                     ls -la /
-                    ls /zap
                     docker ps                     
                     '''
                     archiveArtifacts artifacts: '/zap/wrk/reports/*', fingerprint: true, allowEmptyArchive: true
