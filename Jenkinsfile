@@ -17,8 +17,9 @@ pipeline {
             steps {
                 sh '''
                 trufflehog git -j --branch=main 'https://github.com/edwarddomagala00/abcd-student.git' > truffle.json
-                '''
-                defectDojoPublisher(artifact: 'truffle.json', 
+                cat truffle.json
+                '''  
+              defectDojoPublisher(artifact: 'truffle.json', 
                     productName: 'Juice Shop', 
                     scanType: 'Trufflehog Scan', 
                     engagementName: 'mikolaj.kopras@gmail.com'
