@@ -41,7 +41,7 @@ pipeline {
                     docker cp zap:/zap/wrk/reports/ /zap/wrk/reports
                     ls -la /zap/wrk/reports
                     '''
-                    archiveArtifacts artifacts: '/zap/wrk/reports/*', fingerprint: true, allowEmptyArchive: true
+                    archiveArtifacts artifacts: '/zap/wrk/reports/reports/*', fingerprint: true, allowEmptyArchive: true
                 }   
             }
         }       
