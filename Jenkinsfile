@@ -42,17 +42,20 @@ pipeline {
                 head osv.json
                 '''
             }
+       }
        post {
-            always {
-                 defectDojoPublisher(artifact: 'osv.json', 
+           always {
+               defectDojoPublisher(artifact: 'osv.json', 
                     productName: 'Juice Shop', 
                     scanType: 'OSV Scan', 
-                    engagementName: 'mikolaj.kopras@gmail.com')
-                  defectDojoPublisher(artifact: '/tmp/results/zap_xml_report.xml', 
+                    engagementName: 'mikolaj.kopras@gmail.com'
+               )
+               defectDojoPublisher(artifact: '/tmp/results/zap_xml_report.xml', 
                     productName: 'Juice Shop', 
                     scanType: 'ZAP Scan', 
-                    engagementName: 'mikolaj.kopras@gmail.com')
-         }
-        }
+                    engagementName: 'mikolaj.kopras@gmail.com'
+               )
+           }
+       }
     }
 }
