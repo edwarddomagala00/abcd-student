@@ -12,7 +12,22 @@ pipeline {
                 }
             }
         }
-        stage('DAST') {
+
+       stage('trufflehog') {
+            steps {
+                sh '''
+                trufflehog git -j --branch=main 'https://github.com/edwarddomagala00/abcd-student.git' > truffle.json
+                '''
+                defectDojoPublisher(artifact: 'truffle.json', 
+                    productName: 'Juice Shop', 
+                    scanType: 'Trufflehog Scan', 
+                    engagementName: 'mikolaj.kopras@gmail.com'
+               )
+            }
+       }
+
+
+       stage('DAST') {
             steps {
                 sh '''
                 docker rm -f juice-shop zap
@@ -31,7 +46,6 @@ pipeline {
                   docker cp zap:/zap/wrk/reports/zap_xml_report.xml /tmp/reports/zap_xml_report.xml
                   head /tmp/reports/zap_xml_report.xml
                  '''
-                 archiveArtifacts artifacts: '/tmp/reports', fingerprint: true, allowEmptyArchive: true
                  defectDojoPublisher(artifact: '/tmp/reports/zap_xml_report.xml', 
                     productName: 'Juice Shop', 
                     scanType: 'ZAP Scan', 
@@ -47,12 +61,11 @@ pipeline {
                 ls -la
                 head osv.json
                 '''
-               defectDojoPublisher(artifact: 'osv.json', 
+                defectDojoPublisher(artifact: 'osv.json', 
                     productName: 'Juice Shop', 
                     scanType: 'OSV Scan', 
                     engagementName: 'mikolaj.kopras@gmail.com'
                )
- 
             }
        }
     }
